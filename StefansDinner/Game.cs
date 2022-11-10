@@ -2,28 +2,11 @@
 
 namespace StefansDinner;
 
-public class Game
+public interface IDinnerGuest
 {
-    public static Random Random = new Random();
-
-    public Human stefan = new Human("Stefan");
-    public Human kerstin = new Human("Kerstin");
-    public Human oliver = new Human("Oliver");
-    public Fly fly = new Fly();
-    public Game()
-    {
-        
-    }
-    public void Run()
-    {
-        stefan.Act();
-        kerstin.Act();
-        oliver.Act();
-        fly.Act();
-    }
+    void Act();
 }
-
-public class Fly
+public class Fly : IDinnerGuest
 {
     public void Act()
     {
@@ -31,8 +14,7 @@ public class Fly
         Console.WriteLine($"Flugan {items[Game.Random.Next(items.Length)]}");
     }
 }
-
-public class Human
+public class Human : IDinnerGuest
 {
     public Human(string name)
     {
@@ -46,3 +28,26 @@ public class Human
 
     }
 }
+
+
+public class Game
+{
+    public static Random Random = new Random();
+
+    public List<IDinnerGuest> guests = new List<IDinnerGuest>();
+
+    public Game()
+    {
+        guests.Add(new Human("Stefan"));
+        guests.Add(new Human("Richard"));
+        guests.Add(new Human("Kerstin"));
+        guests.Add(new Human("Oliver"));
+        guests.Add(new Fly());
+    }
+    public void Run()
+    {
+        foreach (var x in guests)
+            x.Act();
+    }
+}
+
